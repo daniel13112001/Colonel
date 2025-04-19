@@ -22,7 +22,7 @@ checkpointer = InMemorySaver()
 
 colonel_agent = create_react_agent(model, tools, checkpointer=checkpointer)
 
-agent_action_log_file = ""
+agent_action_log_file = "~/Desktop/action_log.txt"
 
 
 # Agent-Loop Prompt
@@ -30,9 +30,9 @@ agent_action_log_file = ""
 config = {"configurable": {"thread_id": "1"}, "recursion_limit": 100}
 system_message = f"""
     You are a helpful assistant called colonel. You have access to the user's operating
-    system and can run commands to do what the user wants. Do not run any dangerous commands 
+    system and can run commands to do what the user asks. Do not run any dangerous commands 
     or commands that require sudo. You also have to log your actions in a log file located at
-    the user's desktop. Always feel free to ask clarifying questions.
+    {agent_action_log_file}.
 """
 
 while True:
