@@ -22,14 +22,22 @@ checkpointer = InMemorySaver()
 
 colonel_agent = create_react_agent(model, tools, checkpointer=checkpointer)
 
+agent_action_log_file = ""
+
 
 # Agent-Loop Prompt
 
 config = {"configurable": {"thread_id": "1"}, "recursion_limit": 100}
-# response = colonel_agent.invoke({"messages": [HumanMessage(content="")]}, config)
-# print(response)
+system_message = f"""
+    You are a helpful assistant called colonel. You have access to the user's operating
+    system and can run commands to do what the user wants. Do not run any dangerous commands 
+    or commands that require sudo. You also have to log your actions in a log file located at
+    the user's desktop. Always feel free to ask clarifying questions.
+"""
 
 while True:
     user_prompt = input()
-    response = colonel_agent.invoke({"messages": [HumanMessage(content=user_prompt)]}, config)
-    print(response)
+    response = colonel_agent.invoke({"messages": [HumanMessage(content=user_prompt),
+                                                  SystemMessage(content=system_message)
+                                                  ]}, config)
+    print(response["messages"][-1].content)
