@@ -34,7 +34,7 @@ class RunShellCommandTool(BaseTool):
             args = []
 
         try:
-            result = subprocess.run([command] + args, stdout=True, stderr=True, check=True, text=True).stdout
+            result = subprocess.run([command] + args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, text=True, shell=True).stdout
         except subprocess.CalledProcessError as e:
             result = "Command failed " + e.stderr
         except Exception as e:
